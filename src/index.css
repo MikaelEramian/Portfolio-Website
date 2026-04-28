@@ -82,6 +82,12 @@
 
   html {
     scroll-behavior: smooth;
+    /* Hide scrollbar but keep scrolling */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   body {
@@ -139,6 +145,65 @@
     will-change: transform, opacity;
     animation: ink-fade 650ms ease-out forwards;
     z-index: 9999;
+  }
+
+  /* ── GlowCard: mouse-following border glow ── */
+  .glow-card-wrapper {
+    --glow-x: 50%;
+    --glow-y: 50%;
+    --glow-opacity: 0;
+    isolation: isolate;
+  }
+
+  .glow-card-border {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      300px circle at var(--glow-x) var(--glow-y),
+      hsla(32, 90%, 62%, 0.5),
+      hsla(14, 65%, 55%, 0.2) 40%,
+      transparent 70%
+    );
+    opacity: var(--glow-opacity);
+    transition: opacity 0.4s ease-out;
+    z-index: 0;
+    /* Mask out the interior so only the "border" glows */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+  }
+
+  .glow-card-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Hero Intro phased entrance ── */
+  .hero-intro-hidden {
+    opacity: 0;
+    transform: translateY(25px);
+    filter: blur(6px);
+  }
+  .hero-intro-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity 0.7s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.7s ease-out;
+  }
+
+  /* Special animation for the amber "seed" dot */
+  .dot-birth {
+    animation: dot-birth 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* Text that appears AFTER the dot within the same container */
+  .hero-text-delay {
+    opacity: 0;
+    animation: hero-text-fade 0.6s ease-out 1.0s forwards;
   }
 }
 
@@ -238,6 +303,30 @@
 @keyframes spring-up {
   0% { opacity: 0; transform: translateY(35px); filter: blur(8px); }
   100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+
+@keyframes dot-birth {
+  0% {
+    transform: scale(0);
+    box-shadow: 0 0 0 0 hsla(32, 90%, 62%, 0);
+  }
+  40% {
+    transform: scale(3);
+    box-shadow: 0 0 25px 10px hsla(32, 90%, 62%, 0.5), 0 0 60px 20px hsla(32, 90%, 62%, 0.15);
+  }
+  70% {
+    transform: scale(0.8);
+    box-shadow: 0 0 8px 3px hsla(32, 90%, 62%, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 hsla(32, 90%, 62%, 0);
+  }
+}
+
+@keyframes hero-text-fade {
+  0% { opacity: 0; transform: translateX(-8px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

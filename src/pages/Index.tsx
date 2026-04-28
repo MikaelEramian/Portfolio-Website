@@ -1,12 +1,18 @@
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import CursorTrail from "@/components/CursorTrail";
 import FloatingParticles from "@/components/FloatingParticles";
+import GlowCard from "@/components/GlowCard";
+import HeroIntro from "@/components/HeroIntro";
 import JellyName from "@/components/JellyName";
+import Magnetic from "@/components/Magnetic";
 import Reveal from "@/components/Reveal";
 import ScrollMouse from "@/components/ScrollMouse";
 import ScrollParallax from "@/components/ScrollParallax";
 import SectionHeading from "@/components/SectionHeading";
 import SketchyFilter from "@/components/SketchyFilter";
+import TextScramble from "@/components/TextScramble";
+import PageIntro from "@/components/PageIntro";
+import CandlelightGlow from "@/components/CandlelightGlow";
 
 const EMAIL_PLACEHOLDER = "mikaeleramian@gmail.com";
 const GITHUB_URL = "https://github.com/MikaelEramian";
@@ -14,20 +20,20 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/mikael-eramian/";
 
 const projects = [
   {
-    title: "Chessbot",
-    description: "Secured 2nd place overall at a university chess tournament. Engineered a competitive chess engine using custom heuristics and search algorithms.",
-    color: "bg-amber",
-    link: "https://github.com/angellane/ChessBot",
-    linkLabel: "GitHub",
-    type: "github"
-  },
-  {
     title: "Booze & Bytes",
     description: "Lead programmer for an interactive game built in Unity. I handled the core coding and gameplay mechanics.",
     color: "bg-terracotta",
     link: "https://24427233.wixsite.com/mikaeleramian/blog",
     linkLabel: "Dev Diary",
     type: "external"
+  },
+  {
+    title: "Chessbot",
+    description: "Secured 2nd place overall at a university chess tournament. Engineered a competitive chess engine using custom heuristics and search algorithms.",
+    color: "bg-amber",
+    link: "https://github.com/angellane/ChessBot",
+    linkLabel: "GitHub",
+    type: "github"
   },
   {
     title: "UL Timetable System",
@@ -106,48 +112,49 @@ const Index = () => {
       <ScrollParallax />
       <FloatingParticles />
       <CursorTrail />
+      <PageIntro />
+      <CandlelightGlow />
 
-      <main className="mx-auto w-full max-w-[640px] px-6 pb-12 pt-40 sm:pt-56">
-        {/* Hero — ends naturally, doesn't shout */}
+      <main className="relative z-10 mx-auto w-full max-w-[640px] px-6 pb-12 pt-40 sm:pt-56">
+        {/* Hero — choreographed intro: dot births, text forms around it */}
         <header className="pb-10">
           <div className="sm:pl-6">
-            <Reveal>
+            {/* Phase 1: The amber dot appears first as the "seed" */}
+            <HeroIntro phase={1}>
               <p className="mb-5 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                <span className="mr-2 inline-block h-1.5 w-1.5 translate-y-[1px] rounded-full bg-amber align-middle" />
-                Hi, I am
+                <span className="dot-birth mr-2 inline-block h-1.5 w-1.5 translate-y-[1px] rounded-full bg-amber align-middle" style={{ animationDelay: "0.4s", animationFillMode: "both" }} />
+                {/* Phase 2: text appears next to the dot */}
+                <span className="hero-text-delay">Hi, I am</span>
               </p>
-            </Reveal>
+            </HeroIntro>
   
-            <Reveal delay={80}>
+            {/* Phase 3: Name — dramatic entrance */}
+            <HeroIntro phase={3}>
               <h1 className="font-display text-5xl font-extrabold leading-[1.05] text-foreground sm:text-6xl">
                 <JellyName text="Mikael Eramian" />
               </h1>
-            </Reveal>
+            </HeroIntro>
   
-            <Reveal delay={180}>
+            {/* Phase 4: Subtitle */}
+            <HeroIntro phase={4}>
               <p className="mt-5 text-lg leading-relaxed text-foreground/85">
                 Computer Science student - University of Limerick
               </p>
-            </Reveal>
+            </HeroIntro>
   
-            {/*<Reveal delay={260}>
-              <p className="mt-2 text-base leading-relaxed text-muted-foreground">
-                Product Support Engineer Intern @ Telnyx
-              </p>
-            </Reveal>*/}
-  
-            <Reveal delay={340}>
+            {/* Phase 5: Social icons */}
+            <HeroIntro phase={5}>
               <div className="mt-7">
                 <SocialIcons />
               </div>
-            </Reveal>
+            </HeroIntro>
           </div>
 
-          <Reveal delay={500}>
+          <HeroIntro phase={5}>
             <div className="mt-10 flex justify-center">
               <ScrollMouse />
             </div>
-          </Reveal>
+          </HeroIntro>
         </header>
 
         {/* About */}
@@ -180,36 +187,38 @@ const Index = () => {
         {/* Projects */}
         <section className="pb-16 sm:pl-6">
           <Reveal requireScroll>
-            <SectionHeading eyebrow="work">projects</SectionHeading>
+            <SectionHeading eyebrow="work">Projects</SectionHeading>
           </Reveal>
 
           <div className="mt-8 space-y-4">
             {projects.map((project, i) => (
               <Reveal requireScroll key={project.title} delay={i * 100}>
-                <a 
-                  href={project.link}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group relative flex items-center justify-between border border-border bg-card/40 p-5 transition-all duration-300 hover:border-amber/60 hover:bg-card/60"
-                >
-                  <div className="flex items-center gap-4 pr-4">
-                    <span className={`h-2 w-2 shrink-0 rounded-full ${project.color}`} aria-hidden />
-                    <div>
-                      <h3 className="font-display text-lg font-bold text-foreground group-hover:text-amber transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground line-clamp-1 sm:line-clamp-none">
-                        {project.description}
-                      </p>
+                <GlowCard>
+                  <a 
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="group relative flex items-center justify-between border border-border bg-card/40 p-5 transition-all duration-300 hover:border-amber/60 hover:bg-card/60"
+                  >
+                    <div className="flex items-center gap-4 pr-4">
+                      <span className={`h-2 w-2 shrink-0 rounded-full ${project.color}`} aria-hidden />
+                      <div>
+                        <h3 className="font-display text-lg font-bold text-foreground group-hover:text-amber transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground line-clamp-1 sm:line-clamp-none">
+                          {project.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground group-hover:text-amber shrink-0">
-                    <span className="font-mono text-[10px] uppercase tracking-wider hidden sm:block">
-                      {project.linkLabel}
-                    </span>
-                    {project.type === 'github' ? <Github size={16} /> : <ExternalLink size={16} />}
-                  </div>
-                </a>
+                    <div className="flex items-center gap-2 text-muted-foreground group-hover:text-amber shrink-0">
+                      <span className="font-mono text-[10px] uppercase tracking-wider hidden sm:block">
+                        {project.linkLabel}
+                      </span>
+                      {project.type === 'github' ? <Github size={16} /> : <ExternalLink size={16} />}
+                    </div>
+                  </a>
+                </GlowCard>
               </Reveal>
             ))}
           </div>
@@ -218,7 +227,7 @@ const Index = () => {
         {/* Interests */}
         <section className="pb-16 sm:pl-6">
           <Reveal requireScroll>
-            <SectionHeading eyebrow="into">into</SectionHeading>
+            <SectionHeading eyebrow="into">Interests</SectionHeading>
           </Reveal>
 
           <ul className="space-y-3">
@@ -240,7 +249,7 @@ const Index = () => {
         {/* Stack */}
         <section className="pb-16 sm:pl-6">
           <Reveal requireScroll>
-            <SectionHeading eyebrow="stack">stack</SectionHeading>
+            <SectionHeading eyebrow="stack">Stack</SectionHeading>
           </Reveal>
 
         {/*  <Reveal requireScroll delay={80}>
