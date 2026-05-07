@@ -22,16 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Environmental variables
-.env
-.env.development
-.env.production
-.env.test
-
-# Vite
-*.timestamp-*
-
-# Windows
-Thumbs.db
-desktop.ini

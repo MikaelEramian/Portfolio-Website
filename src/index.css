@@ -1,339 +1,1030 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ================================================
+   Windows XP Desktop Portfolio - Global Styles
+   ================================================ */
 
-/* Mikael's portfolio — warm candlelit dark palette.
-   All colors HSL. Tokens only — no raw colors in components. */
-
-@layer base {
-  :root {
-    /* Warm dark coffee background, creamy off-white text — lifted from black,
-       leans into the amber accent so the page feels lit, not murky */
-    --background: 24 20% 16%;
-    --foreground: 36 32% 93%;
-
-    --card: 22 16% 13%;
-    --card-foreground: 36 30% 92%;
-
-    --popover: 22 16% 9%;
-    --popover-foreground: 36 30% 92%;
-
-    /* Amber primary */
-    --primary: 32 90% 62%;
-    --primary-foreground: 22 20% 10%;
-
-    /* Terracotta secondary */
-    --secondary: 14 65% 55%;
-    --secondary-foreground: 36 30% 96%;
-
-    --muted: 22 12% 14%;
-    --muted-foreground: 36 14% 65%;
-
-    --accent: 32 90% 62%;
-    --accent-foreground: 22 20% 10%;
-
-    --destructive: 0 70% 55%;
-    --destructive-foreground: 36 30% 96%;
-
-    --border: 30 14% 18%;
-    --input: 30 14% 18%;
-    --ring: 32 90% 62%;
-
-    /* Personality accents */
-    --amber: 32 90% 62%;
-    --terracotta: 14 65% 55%;
-    --sage: 140 22% 55%;
-    --steel: 210 25% 60%;
-    --paper: 36 30% 92%;
-
-    --radius: 0.5rem;
-
-    /* Springy easing */
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .dark {
-    --background: 24 20% 16%;
-    --foreground: 36 32% 93%;
-    --card: 22 16% 13%;
-    --card-foreground: 36 30% 92%;
-    --popover: 22 16% 9%;
-    --popover-foreground: 36 30% 92%;
-    --primary: 32 90% 62%;
-    --primary-foreground: 22 20% 10%;
-    --secondary: 14 65% 55%;
-    --secondary-foreground: 36 30% 96%;
-    --muted: 22 12% 14%;
-    --muted-foreground: 36 14% 65%;
-    --accent: 32 90% 62%;
-    --accent-foreground: 22 20% 10%;
-    --destructive: 0 70% 55%;
-    --destructive-foreground: 36 30% 96%;
-    --border: 30 14% 18%;
-    --input: 30 14% 18%;
-    --ring: 32 90% 62%;
-  }
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    /* Hide scrollbar but keep scrolling */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
-  html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "ss01", "cv11";
-  }
-
-  ::selection {
-    background: hsl(var(--amber) / 0.35);
-    color: hsl(var(--foreground));
-  }
-
-  /* Clean text interactions - minimal color shift to complement the difference cursor */
-  p, h2, h3, li, dt, dd {
-    transition: color 0.4s ease-out;
-  }
-  
-  p:hover, h2:hover, h3:hover, li:hover, dt:hover, dd:hover {
-    color: hsl(var(--amber));
-  }
+html {
+  font-size: 16px;
+  zoom: 1.4;
 }
 
-@layer utilities {
-  .font-display {
-    font-family: "Fraunces", "Times New Roman", serif;
-    font-optical-sizing: auto;
-    letter-spacing: -0.02em;
-  }
-  .font-mono {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-  }
-  .font-sans {
-    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
-  }
-
-  .sketchy {
-    filter: url(#sketchy-filter);
-  }
-
-  /* Soft warm glow used on the scroll-mouse indicator */
-  .glow-amber {
-    filter: drop-shadow(0 0 6px hsl(var(--amber) / 0.55))
-      drop-shadow(0 0 14px hsl(var(--amber) / 0.25));
-  }
-
-  /* Ink dot used by cursor trail */
-  .ink-dot {
-    position: fixed;
-    pointer-events: none;
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    background: hsl(var(--amber));
-    mix-blend-mode: screen;
-    will-change: transform, opacity;
-    animation: ink-fade 650ms ease-out forwards;
-    z-index: 9999;
-  }
-
-  /* ── GlowCard: mouse-following border glow ── */
-  .glow-card-wrapper {
-    --glow-x: 50%;
-    --glow-y: 50%;
-    --glow-opacity: 0;
-    isolation: isolate;
-  }
-
-  .glow-card-border {
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-      300px circle at var(--glow-x) var(--glow-y),
-      hsla(32, 90%, 62%, 0.5),
-      hsla(14, 65%, 55%, 0.2) 40%,
-      transparent 70%
-    );
-    opacity: var(--glow-opacity);
-    transition: opacity 0.4s ease-out;
-    z-index: 0;
-    /* Mask out the interior so only the "border" glows */
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    padding: 1px;
-  }
-
-  .glow-card-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ── Hero Intro phased entrance ── */
-  .hero-intro-hidden {
-    opacity: 0;
-    transform: translateY(25px);
-    filter: blur(6px);
-  }
-  .hero-intro-visible {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-    transition: opacity 0.7s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.7s ease-out;
-  }
-
-  /* Special animation for the amber "seed" dot */
-  .dot-birth {
-    animation: dot-birth 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  /* Text that appears AFTER the dot within the same container */
-  .hero-text-delay {
-    opacity: 0;
-    animation: hero-text-fade 0.6s ease-out 1.0s forwards;
-  }
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Tahoma', 'Segoe UI', sans-serif;
 }
 
-@layer base {
-  /*
-   * Sketchbook background — layers:
-   *  body bg   — hand-drawn ruled grid + scattered ink ticks (sketchy SVG)
-   *  ::after   — fine grain noise overlay (paper tooth)
-   *  Glows are handled by React component for staggered breathing.
-   */
-
-
-  /* Sketched technical blueprint background — complex grid, isometric diagonals, 
-     concentric nodes, data waves, and crosshairs. Hand-drawn wobbly effect via SVG filters. */
-  .painted-bg {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><defs><filter id='w' x='-10%25' y='-10%25' width='120%25' height='120%25'><feTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' seed='12'/><feDisplacementMap in='SourceGraphic' scale='4'/></filter></defs><g filter='url(%23w)'><g fill='none' stroke-linecap='round'><path stroke='hsl(32 60%25 55%25)' stroke-opacity='0.04' stroke-width='1' d='M0 40h400 M0 80h400 M0 120h400 M0 160h400 M0 200h400 M0 240h400 M0 280h400 M0 320h400 M0 360h400 M40 0v400 M80 0v400 M120 0v400 M160 0v400 M200 0v400 M240 0v400 M280 0v400 M320 0v400 M360 0v400'/><path stroke='hsl(32 60%25 55%25)' stroke-opacity='0.1' stroke-width='1.5' d='M0 200h400 M200 0v400'/><path stroke='hsl(14 60%25 55%25)' stroke-opacity='0.06' stroke-width='1' d='M0 0l400 400 M0 400l400 -400 M200 0l200 200 M0 200l200 200 M200 400l200 -200 M0 200l200 -200'/><g stroke='hsl(210 30%25 60%25)' stroke-opacity='0.12' stroke-width='1.2'><circle cx='200' cy='200' r='40'/><circle cx='200' cy='200' r='60'/><circle cx='0' cy='0' r='80'/><circle cx='400' cy='400' r='80'/><circle cx='400' cy='0' r='80'/><circle cx='0' cy='400' r='80'/></g><g stroke='hsl(32 80%25 60%25)' stroke-opacity='0.08' stroke-width='1.5'><path d='M0 200 Q 100 100, 200 200 T 400 200'/><path d='M0 200 Q 100 300, 200 200 T 400 200'/><path d='M200 0 Q 100 100, 200 200 T 200 400'/><path d='M200 0 Q 300 100, 200 200 T 200 400'/></g><g stroke='hsl(14 70%25 55%25)' stroke-opacity='0.25' stroke-width='1.5'><path d='M195 160h10 M195 240h10 M160 195v10 M240 195v10'/><path d='M395 80h10 M395 320h10 M80 395v10 M320 395v10'/><path d='M100 95v10 M95 100h10 M300 95v10 M295 100h10 M100 295v10 M95 300h10 M300 295v10 M295 300h10'/></g></g><g fill='hsl(32 90%25 62%25)' fill-opacity='0.3'><circle cx='100' cy='100' r='2'/><circle cx='300' cy='100' r='2'/><circle cx='100' cy='300' r='2'/><circle cx='300' cy='300' r='2'/><circle cx='200' cy='200' r='3'/></g></g></svg>");
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-position: center;
-  }
-
-  .painted-bg::after {
-    content: "";
-    position: fixed;
-    inset: -5%; /* Slightly larger to allow shifting without cutting edges */
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.16;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9  0 0 0 0 0.7  0 0 0 0 0.4  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    animation: noise-jitter 0.4s steps(2) infinite;
-  }
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-@keyframes ink-fade {
-  0% {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
+/* ================================================
+   DESKTOP - XP Bliss Wallpaper
+   ================================================ */
+.xp-desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 30px);
+  background:
+    url('/windowsxpbackground.webp') center/cover no-repeat,
+    url('https://i.imgur.com/nqvUvMH.jpg') center/cover no-repeat,
+    linear-gradient(180deg, #245EDC 0%, #3A8FE8 45%, #7CBA4C 55%, #4A9A2F 100%);
+  overflow: hidden;
+  user-select: none;
+  z-index: 0;
 }
 
-@keyframes jelly {
-  0% { transform: translateY(0) scale(1) skewX(0); }
-  25% { transform: translateY(-8px) scale(1.15, 0.9) skewX(-4deg); }
-  50% { transform: translateY(2px) scale(0.95, 1.08) skewX(3deg); }
-  75% { transform: translateY(-3px) scale(1.05, 0.97) skewX(-2deg); }
-  100% { transform: translateY(0) scale(1) skewX(0); }
+/* ================================================
+   DESKTOP ICONS
+   ================================================ */
+.desktop-icons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1;
 }
 
-@keyframes scroll-wheel {
-  0% { transform: translateY(0); opacity: 0; }
-  30% { opacity: 1; }
-  80% { transform: translateY(10px); opacity: 0; }
-  100% { transform: translateY(10px); opacity: 0; }
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  padding: 4px 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: background-color 0.05s;
 }
 
-@keyframes chevron-fall {
-  0%   { transform: translateY(-6px); opacity: 0; }
-  35%  { opacity: 1; }
-  70%  { transform: translateY(4px); opacity: 0.9; }
-  100% { transform: translateY(8px); opacity: 0; }
+.desktop-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
-.animate-chevron-fall {
-  animation: chevron-fall 1.8s cubic-bezier(0.55, 0.05, 0.45, 0.95) infinite;
+.desktop-icon:active,
+.desktop-icon.selected {
+  background-color: rgba(0, 0, 128, 0.35);
+  border: 1px dotted rgba(255, 255, 255, 0.7);
 }
 
-@keyframes draw-underline {
-  to { stroke-dashoffset: 0; }
+.desktop-icon-img {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  image-rendering: pixelated;
 }
 
-@keyframes pulse-glow {
-  0% { opacity: 0.4; filter: brightness(0.85) contrast(1.05); }
-  100% { opacity: 1; filter: brightness(1.3) contrast(1.15); }
+.desktop-icon-label {
+  font-size: 11px;
+  color: white;
+  text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+  max-width: 68px;
+  font-family: 'Tahoma', sans-serif;
 }
 
-@keyframes float-up {
-  0% { transform: translateY(100vh); }
-  100% { transform: translateY(-100vh); }
+/* Desktop rubber-band selection */
+.desktop-selection-box {
+  position: absolute;
+  border: 1px solid #316AC5;
+  background: rgba(49, 106, 197, 0.25);
+  pointer-events: none;
+  z-index: 2;
 }
 
-@keyframes wriggle {
-  0% { transform: skewX(-6deg) skewY(3deg) scaleY(0.95) scaleX(1.02); }
-  100% { transform: skewX(6deg) skewY(-3deg) scaleY(1.05) scaleX(0.98); }
+/* ================================================
+   TASKBAR
+   ================================================ */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(
+    to bottom,
+    #245EDC 0%,
+    #1941A5 100%
+  );
+  display: flex;
+  align-items: center;
+  z-index: 9999;
+  padding: 0 2px;
+  border-top: 1px solid #4580E8;
+  overflow: visible;
 }
 
-@keyframes noise-jitter {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-1%, 1%); }
-  100% { transform: translate(1%, -1%); }
+/* Start button wrapper - anchors the start menu */
+.start-button-wrapper {
+  position: relative;
+  overflow: visible;
 }
 
-@keyframes spring-up {
-  0% { opacity: 0; transform: translateY(35px); filter: blur(8px); }
-  100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+/* Start Button */
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px 0 6px;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(
+    180deg,
+    #5ebd5e 0%,
+    #3a9e3a 15%,
+    #3a9e3a 50%,
+    #2d8b2d 51%,
+    #2d8b2d 85%,
+    #5ebd5e 100%
+  );
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: italic;
+  font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'Tahoma', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 0 2px rgba(0,0,0,0.4);
 }
 
-@keyframes dot-birth {
-  0% {
-    transform: scale(0);
-    box-shadow: 0 0 0 0 hsla(32, 90%, 62%, 0);
-  }
-  40% {
-    transform: scale(3);
-    box-shadow: 0 0 25px 10px hsla(32, 90%, 62%, 0.5), 0 0 60px 20px hsla(32, 90%, 62%, 0.15);
-  }
-  70% {
-    transform: scale(0.8);
-    box-shadow: 0 0 8px 3px hsla(32, 90%, 62%, 0.3);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 hsla(32, 90%, 62%, 0);
-  }
+.start-button:hover {
+  background: linear-gradient(
+    180deg,
+    #4aaf4e 0%,
+    #3a9f3f 8%,
+    #42b946 18%,
+    #359e3a 50%,
+    #268a2b 51%,
+    #32a338 100%
+  );
 }
 
-@keyframes hero-text-fade {
-  0% { opacity: 0; transform: translateX(-8px); }
-  100% { opacity: 1; transform: translateX(0); }
+.start-button:active {
+  background: linear-gradient(
+    180deg,
+    #2e8832 0%,
+    #267d2a 8%,
+    #2e9832 18%,
+    #227c26 50%,
+    #166e1a 51%,
+    #1e8122 100%
+  );
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.start-button-logo {
+  width: 20px;
+  height: 20px;
+}
+
+/* Taskbar Window Buttons Area */
+.taskbar-windows {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0 4px;
+  gap: 2px;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+.taskbar-window-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  min-width: 120px;
+  max-width: 170px;
+  padding: 0 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    #3c6fdb 0%,
+    #2c5aca 50%,
+    #2451c0 51%,
+    #2e5fd4 100%
+  );
+  color: white;
+  font-size: 11px;
+  font-family: 'Tahoma', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.taskbar-window-button.active {
+  background: linear-gradient(
+    180deg,
+    #1f4ebb 0%,
+    #1a3fa6 50%,
+    #15359c 51%,
+    #1a44b0 100%
+  );
+  border: 1px solid rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.taskbar-window-button:hover {
+  background: linear-gradient(
+    180deg,
+    #4a7ee5 0%,
+    #3a6ad8 50%,
+    #3260d0 51%,
+    #3c6fdb 100%
+  );
+}
+
+.taskbar-btn-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.taskbar-btn-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* System Tray */
+.system-tray {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 8px;
+  background: linear-gradient(
+    180deg,
+    #1690e6 0%,
+    #0e6cc7 50%,
+    #0c5fba 51%,
+    #1580d9 100%
+  );
+  border: 1px solid rgba(0,0,0,0.2);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.15);
+  border-radius: 2px;
+  margin: 0 2px;
+  font-size: 11px;
+  color: white;
+  font-family: 'Tahoma', sans-serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.tray-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  cursor: default;
+}
+
+.tray-clock {
+  font-size: 11px;
+  min-width: 36px;
+  text-align: center;
+}
+
+/* ================================================
+   WINDOW OVERRIDES & ENHANCEMENTS
+   ================================================ */
+
+/* Make sure draggable windows have proper positioning */
+.xp-window-wrapper {
+  position: absolute;
+}
+
+/* Active window title bar glow */
+.xp-window-wrapper .window.active-window .title-bar {
+  background: linear-gradient(
+    180deg,
+    #0058e6 0%,
+    #3a84f5 3%,
+    #1665e0 6%,
+    #0855d0 10%,
+    #0051cc 14%,
+    #0855d0 86%,
+    #0350c7 90%,
+    #084fd0 94%,
+    #1665e0 97%,
+    #3a84f5 100%
+  );
+}
+
+/* Inactive window title bar */
+.xp-window-wrapper .window.inactive-window .title-bar {
+  background: linear-gradient(
+    180deg,
+    #7996c8 0%,
+    #98b5e2 3%,
+    #7f9fce 6%,
+    #7593c4 10%,
+    #6e8ebe 14%,
+    #7593c4 86%,
+    #6e8ebe 90%,
+    #7593c4 94%,
+    #7f9fce 97%,
+    #98b5e2 100%
+  );
+}
+
+/* Window resizing */
+.xp-window-wrapper .react-resizable {
+  position: relative;
+}
+
+.xp-window-wrapper .react-resizable-handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+  z-index: 10;
+}
+
+.xp-window-wrapper .react-resizable-handle::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(0,0,0,0.3);
+  border-bottom: 2px solid rgba(0,0,0,0.3);
+}
+
+/* Window body scroll */
+.window-body-content {
+  overflow: auto;
+  height: 100%;
+}
+
+/* ================================================
+   CMD / TERMINAL STYLES
+   ================================================ */
+.cmd-window .window-body {
+  background-color: #000 !important;
+  color: #c0c0c0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.terminal-window .window-body {
+  background-color: #0c0c0c !important;
+  color: #33ff33;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 4px;
+}
+
+.terminal-prompt {
+  color: #33ff33;
+  white-space: nowrap;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #33ff33;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  caret-color: #33ff33;
+}
+
+.terminal-response {
+  color: #33ff33;
+  margin: 4px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-user-msg {
+  color: #33ff33;
+  margin: 2px 0;
+}
+
+.terminal-loading {
+  color: #33ff33;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* CMD Links */
+.cmd-link {
+  color: #00ffff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cmd-link:hover {
+  color: #ffff00;
+}
+
+/* ================================================
+   NOTEPAD STYLES
+   ================================================ */
+.notepad-menu-bar {
+  display: flex;
+  gap: 0;
+  padding: 3px 4px;
+  background: #ece9d8;
+  border-bottom: 1px solid #aca899;
+  font-size: 12px;
+  font-family: 'Tahoma', sans-serif;
+}
+
+.notepad-menu-item {
+  padding: 3px 10px;
+  cursor: default;
+  color: #000;
+}
+
+.notepad-menu-item:hover {
+  background: #316ac5;
+  color: white;
+}
+
+.notepad-content {
+  background: white;
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  padding: 6px 10px;
+  white-space: pre;
+  overflow: auto;
+  flex: 1;
+  line-height: 1.5;
+  border: none;
+  outline: none;
+}
+
+/* ================================================
+   ABOUT WINDOW - Explorer Two-Panel
+   ================================================ */
+.explorer-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.explorer-sidebar {
+  width: 180px;
+  min-width: 160px;
+  border-right: 1px solid #aca899;
+  background: white;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.explorer-content {
+  flex: 1;
+  padding: 14px;
+  background: white;
+  overflow-y: auto;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Tree view overrides for explorer */
+.explorer-sidebar [role="tree"] {
+  font-size: 12px;
+}
+
+.explorer-sidebar [role="treeitem"] {
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.explorer-sidebar [role="treeitem"]:hover {
+  background: #e8e8e8;
+}
+
+.explorer-sidebar [role="treeitem"].selected {
+  background: #316ac5;
+  color: white;
+}
+
+.tree-file-item {
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.tree-file-item:hover {
+  background-color: rgba(49, 106, 197, 0.1);
+}
+
+.tree-file-item.selected {
+  background-color: #316ac5;
+  color: white;
+}
+
+/* ================================================
+   PROJECTS WINDOW
+   ================================================ */
+.project-list {
+  padding: 8px;
+}
+
+.project-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #aca899;
+  background: #f5f5f5;
+}
+
+.project-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.project-info {
+  flex: 1;
+}
+
+.project-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.project-status-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.project-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* ================================================
+   START MENU
+   ================================================ */
+.start-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 380px;
+  background: #ece9d8;
+  border: 2px solid #0055e5;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  z-index: 10000;
+  box-shadow: 2px -2px 8px rgba(0,0,0,0.3);
+  overflow: visible;
+  font-family: 'Tahoma', sans-serif;
+}
+
+.start-menu-header {
+  background: linear-gradient(
+    180deg,
+    #1f5fcc 0%,
+    #0848a8 100%
+  );
+  color: white;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.start-menu-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: #316ac5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border: 2px solid white;
+}
+
+.start-menu-body {
+  display: flex;
+  border-top: 1px solid #aca899;
+}
+
+.start-menu-left {
+  flex: 1;
+  background: white;
+  padding: 4px 0;
+}
+
+.start-menu-right {
+  width: 160px;
+  background: #d3e5fa;
+  padding: 4px 0;
+  border-left: 1px solid #aca899;
+}
+
+.start-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #000;
+  text-decoration: none;
+}
+
+.start-menu-item:hover {
+  background: #316ac5;
+  color: white;
+}
+
+.start-menu-item-icon {
+  font-size: 20px;
+  width: 26px;
+  text-align: center;
+}
+
+.start-menu-divider {
+  height: 1px;
+  background: #aca899;
+  margin: 4px 0;
+}
+
+.start-menu-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 12px;
+  background: #ece9d8;
+  border-top: 1px solid #aca899;
+}
+
+.start-menu-footer button {
+  font-size: 11px;
+}
+
+/* ================================================
+   ERROR DIALOG
+   ================================================ */
+.error-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200000;
+}
+
+.error-dialog-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  min-width: 300px;
+}
+
+.error-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.error-text {
+  font-size: 13px;
+  font-family: 'Tahoma', sans-serif;
+  line-height: 1.5;
+  color: #000;
+}
+
+.error-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 8px 16px 12px;
+}
+
+/* ================================================
+   BOOT SEQUENCE
+   ================================================ */
+.boot-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.boot-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Boot loading screen */
+.boot-loading {
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.boot-logo {
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.boot-logo .boot-name {
+  color: #fff;
+  font-family: 'Franklin Gothic Medium', 'Tahoma', sans-serif;
+}
+
+.boot-logo .boot-os {
+  color: #00bcd4;
+  font-family: 'Franklin Gothic Medium', 'Tahoma', sans-serif;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.boot-version {
+  color: #666;
+  font-size: 14px;
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: -8px;
+  letter-spacing: 1px;
+}
+
+.boot-tagline {
+  color: #aaa;
+  font-size: 12px;
+  font-family: 'Tahoma', sans-serif;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.boot-progress-container {
+  width: 220px;
+  height: 18px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.boot-progress-track {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.boot-progress-blocks {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  height: 100%;
+  align-items: center;
+  animation: boot-slide 2s linear infinite;
+}
+
+.boot-progress-block {
+  width: 8px;
+  height: 10px;
+  background: linear-gradient(180deg, #6699ff, #3366cc);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+@keyframes boot-slide {
+  0% { transform: translateX(-30px); }
+  100% { transform: translateX(30px); }
+}
+
+/* Welcome screen */
+.boot-welcome {
+  background: linear-gradient(
+    180deg,
+    #004e98 0%,
+    #003e7e 30%,
+    #002d62 100%
+  );
+  cursor: pointer;
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcome-title {
+  color: white;
+  font-size: 28px;
+  font-family: 'Franklin Gothic Medium', 'Tahoma', sans-serif;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.welcome-user-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.welcome-user-card:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.welcome-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #4a90d9, #1e5fa6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 2px solid white;
+}
+
+.welcome-username {
+  color: white;
+  font-size: 18px;
+  font-family: 'Tahoma', sans-serif;
+  font-weight: bold;
+}
+
+.welcome-hint {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  font-family: 'Tahoma', sans-serif;
+  margin-top: 4px;
+}
+
+.welcome-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(
+    180deg,
+    #1658c7 0%,
+    #0b3b8e 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+}
+
+.welcome-windows-logo {
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  font-family: 'Tahoma', sans-serif;
+}
+
+/* Desktop fade-in */
+.desktop-fade-in {
+  animation: desktopAppear 0.6s ease-out;
+}
+
+@keyframes desktopAppear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================================================
+   MISC
+   ================================================ */
+
+/* XP window maximize override */
+.window-maximized {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: calc(100% - 30px) !important;
+  transform: translate(0, 0) !important;
+}
+
+/* Hide default Vite styles */
+.App {
+  text-align: unset;
+}
+
+/* Make sure the app fills viewport */
+.app-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-window-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Windows XP logo SVG for start button */
+.start-logo-svg {
+  width: 18px;
+  height: 18px;
+}
+/* Fix XP.css button override */
+.window-body button,
+.error-buttons button {
+  border: 1px solid #003c74 !important;
+  background: linear-gradient(180deg, #fff, #ecebe5 86%, #d8d0c4) !important;
+  box-shadow: inset 1px 1px #fff, inset -1px -1px grey, inset 2px 2px #dfdfdf !important;
+  border-radius: 3px !important;
+  min-width: 75px !important;
+  min-height: 23px !important;
+  padding: 0 12px !important;
+  font-family: 'Tahoma', sans-serif !important;
+  font-size: 11px !important;
+  cursor: pointer !important;
+}
+
+.window-body button:hover,
+.error-buttons button:hover {
+  background: linear-gradient(180deg, #fff, #dff0ff 86%, #c2e0ff) !important;
+}
+
+.window-body button:active,
+.error-buttons button:active {
+  box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf !important;
 }
