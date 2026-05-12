@@ -1,7 +1,27 @@
 // Vercel Serverless Function for Claude API
 // This handles POST /api/chat in production (Vercel) and dev (via proxy)
 
+const rateLimits = new Map();
+
 export default async function handler(req, res) {
+  const ip = req.headers['x-forwarded-for'] || 'unknown';
+  const now = Date.now();
+  const windowTime = 60 * 60 * 1000; // 1 hour
+
+  if (rateLimits.has(ip)) {
+    const data = rateLimits.get(ip);
+    if (now - data.startTime < windowTime) {
+      if (data.count >= 20) {
+        return res.status(429).send('Rate limit exceeded. Try again later.');
+      }
+      data.count++;
+    } else {
+      rateLimits.set(ip, { count: 1, startTime: now });
+    }
+  } else {
+    rateLimits.set(ip, { count: 1, startTime: now });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
